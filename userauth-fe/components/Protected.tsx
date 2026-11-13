@@ -13,10 +13,10 @@ import { useAuth } from "@/store/auth";
 import "@/assets/css/protected.css";
 
 
-const ADMIN_ROUTE = "/users";
+const ADMIN_ROUTES = ["/users", "/collections/manage"];
 
 function isAllowed(pathname: string, role: IUser["role"]) {
-  const adminRoute = pathname === ADMIN_ROUTE || pathname.startsWith(`${ADMIN_ROUTE}/`);
+  const adminRoute = ADMIN_ROUTES.some((route) => pathname === route || pathname.startsWith(`${route}/`));
   return !adminRoute || role === "Admin";
 }
 
@@ -109,6 +109,7 @@ export default function Protected({ children }: IProtectedProps) {
           <Link href="/dashboard">Dashboard</Link>
           <Link href="/profile">Profile</Link>
           {user?.role === "Admin" && <Link href="/users">Users</Link>}
+          {user?.role === "Admin" && <Link href="/collections/manage">Catalog manager</Link>}
           <button className="secondary" type="button" disabled={signingOut} onClick={logout}>
             {signingOut ? "Signing out…" : "Sign out"}
           </button>

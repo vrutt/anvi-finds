@@ -72,3 +72,9 @@ Replace the email with the registered user's email.
 3. Add request/response schemas, database queries in a repository, and business rules in a service. The request session owns commit and rollback.
 4. Add routes, attach the shared authorization dependency where required, and register the router in `app/main.py`.
 5. Add router tests in `tests/<module>/`; run `python -m pytest`. Tests use `.env.test` and an isolated in-memory database.
+# Collection catalog module
+
+The catalog is isolated under `app/modules/collection` with SQLAlchemy models, Pydantic request/response schemas, repository queries, service logic, and routes. Public reads are available at `/api/v1/collections`, `/api/v1/collections/{slug}`, `/api/v1/collections/{slug}/products`, and `/api/v1/products/{id}`. Creating collections or products requires the current `Admin` role. Product listing supports category/shop filters and recent-first offset pagination (`page`, `page_size`).
+
+Apply the new schema with `alembic upgrade head` after configuring the database. Collection records can point to a parent collection; product records belong to one collection.
+

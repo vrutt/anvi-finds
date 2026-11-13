@@ -7,4 +7,5 @@ export const API_ENDPOINTS = {
     me: "/auth/me",
     users: "/auth/users",
   },
+  catalog: { collections: "/collections", products: "/products" },
 } as const;

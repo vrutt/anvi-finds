@@ -10,7 +10,7 @@ from app.config.database import create_database_engine, create_session_factory
 from app.config.logging import close_logging, configure_logging
 from app.config.settings import settings
 from app.middleware.errors import register_exception_handlers
-from app.modules import user_router
+from app.modules import collection_router, user_router
 from app.security.cleanup import cleanup_auth_records
 from app.security.rate_limit import limiter
 from app.utils.base_schema import ErrorResponse
@@ -81,6 +81,11 @@ app.include_router(
         status.HTTP_422_UNPROCESSABLE_CONTENT: {"model": ErrorResponse, "description": "Invalid input"},
         status.HTTP_500_INTERNAL_SERVER_ERROR: {"model": ErrorResponse, "description": "Unexpected server error"},
     },
+)
+app.include_router(
+    collection_router,
+    prefix=f"{ApiPaths.API_PREFIX}{ApiPaths.API_VERSION}",
+    tags=["Collections"],
 )
 
 

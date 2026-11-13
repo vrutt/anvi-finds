@@ -46,6 +46,13 @@ Refresh requests are coordinated within one browser tab. Separate tabs can race 
 4. Add a route or layout under `app/`; use the protected layout and backend authorization for private data.
 5. Run `npm run lint`, `npm run format:check`, and `npm run build`. To fix formatting, run `npm run lint:fix` followed by `npm run format`.
 
+## Curated collections
+
+- Public browsing starts at `/collections`; each collection has a shareable `/collections/<slug>` URL and each product has a shareable `/products/<id>` detail URL.
+- Signed-in administrators can use `/collections/manage` to create top-level collections, nested collections, and products. Product image, destination URL, title, and destination collection are required. Collection name is the only required collection field.
+- Public collection pages show child collections and recent products. Product category and shop filters are applied by the API, with 12 products per page.
+- Catalog API calls live in `services/api/apiCalls/collections`; models for API data live in `types/collection.ts`. The backend enforces the administrator role on writes; public reads do not require a session.
+
 ## Rendering
 
 Login and registration have statically generated shells. Protected pages render a static shell and fetch session-specific data on the client without caching; the guard does not replace backend authorization. ISR is unnecessary because the app has no periodically refreshed public data. If future pages need personalized server-rendered content, use request-time rendering and do not share cached user data.
