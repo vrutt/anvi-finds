@@ -50,7 +50,8 @@ Refresh requests are coordinated within one browser tab. Separate tabs can race 
 
 - Public browsing starts at `/collections`; each collection has a shareable `/collections/<slug>` URL and each product has a shareable `/products/<id>` detail URL.
 - Signed-in administrators can use `/collections/manage` to create top-level collections, nested collections, and products. Product image, destination URL, title, and destination collection are required. Collection name is the only required collection field.
-- Public collection pages show child collections and recent products. Product category and shop filters are applied by the API, with 12 products per page.
+- The admin catalog listing and nested collection/product detail pages include breadcrumbs, edit forms, and delete actions. Admin read, edit, and delete API routes enforce the `Admin` role; collection deletion cascades to its nested content.
+- Public collection pages show child collections and recent products. The collection listing can be searched by name or reel number and filtered by collection category/shop; products are paginated 12 per page.
 - Catalog API calls live in `services/api/apiCalls/collections`; models for API data live in `types/collection.ts`. The backend enforces the administrator role on writes; public reads do not require a session.
 
 ## Rendering

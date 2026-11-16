@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, String, Text
+from sqlalchemy import Column, ForeignKey, Integer, JSON, String, Text
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -12,7 +12,10 @@ class Collection(CustomBaseModel):
     name = Column(String(160), nullable=False)
     slug = Column(String(180), unique=True, nullable=False, index=True)
     description = Column(Text, nullable=True)
-    image_url = Column(String(2048), nullable=True)
+    image_urls = Column(JSON, nullable=False, default=list)
+    reel_number = Column(Integer, nullable=True, index=True)
+    shop = Column(String(40), nullable=True, index=True)
+    category = Column(String(120), nullable=True, index=True)
     children = relationship("Collection", cascade="all, delete-orphan", lazy="noload")
     products = relationship("Product", cascade="all, delete-orphan", lazy="noload")
 
@@ -25,5 +28,3 @@ class Product(CustomBaseModel):
     url = Column(String(2048), nullable=False)
     title = Column(String(240), nullable=False)
     description = Column(Text, nullable=True)
-    shop = Column(String(40), nullable=True)
-    category = Column(String(120), nullable=True, index=True)

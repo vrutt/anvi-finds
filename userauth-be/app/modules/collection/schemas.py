@@ -10,7 +10,10 @@ class CollectionCreate(RequestSchema):
     name: str = Field(min_length=1, max_length=160)
     parent_id: UUID | None = None
     description: str | None = Field(default=None, max_length=10000)
-    image_url: HttpUrl | None = None
+    image_urls: list[HttpUrl] = Field(default_factory=list, max_length=3)
+    reel_number: int | None = Field(default=None, ge=0)
+    shop: str | None = Field(default=None, max_length=40)
+    category: str | None = Field(default=None, max_length=120)
 
     @field_validator("name")
     @classmethod
@@ -26,8 +29,6 @@ class ProductCreate(RequestSchema):
     url: HttpUrl
     title: str = Field(min_length=1, max_length=240)
     description: str | None = Field(default=None, max_length=10000)
-    shop: str | None = Field(default=None, max_length=40)
-    category: str | None = Field(default=None, max_length=120)
 
     @field_validator("title")
     @classmethod
@@ -35,6 +36,24 @@ class ProductCreate(RequestSchema):
         if not value.strip():
             raise ValueError("Title cannot be blank")
         return value.strip()
+
+
+class CollectionUpdate(RequestSchema):
+    name: str | None = Field(default=None, min_length=1, max_length=160)
+    parent_id: UUID | None = None
+    description: str | None = Field(default=None, max_length=10000)
+    image_urls: list[HttpUrl] | None = Field(default=None, max_length=3)
+    reel_number: int | None = Field(default=None, ge=0)
+    shop: str | None = Field(default=None, max_length=40)
+    category: str | None = Field(default=None, max_length=120)
+
+
+class ProductUpdate(RequestSchema):
+    collection_id: UUID | None = None
+    image_url: HttpUrl | None = None
+    url: HttpUrl | None = None
+    title: str | None = Field(default=None, min_length=1, max_length=240)
+    description: str | None = Field(default=None, max_length=10000)
 
 
 class ProductResponse(BaseModel):
@@ -45,8 +64,6 @@ class ProductResponse(BaseModel):
     url: str
     title: str
     description: str | None
-    shop: str | None
-    category: str | None
     created_at: datetime
 
     @field_validator("created_at")
@@ -62,7 +79,10 @@ class CollectionResponse(BaseModel):
     name: str
     slug: str
     description: str | None
-    image_url: str | None
+    image_urls: list[str]
+    reel_number: int | None
+    shop: str | None
+    category: str | None
     created_at: datetime
     children: list["CollectionResponse"] = Field(default_factory=list)
     products: list[ProductResponse] = Field(default_factory=list)

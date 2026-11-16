@@ -74,7 +74,7 @@ Replace the email with the registered user's email.
 5. Add router tests in `tests/<module>/`; run `python -m pytest`. Tests use `.env.test` and an isolated in-memory database.
 # Collection catalog module
 
-The catalog is isolated under `app/modules/collection` with SQLAlchemy models, Pydantic request/response schemas, repository queries, service logic, and routes. Public reads are available at `/api/v1/collections`, `/api/v1/collections/{slug}`, `/api/v1/collections/{slug}/products`, and `/api/v1/products/{id}`. Creating collections or products requires the current `Admin` role. Product listing supports category/shop filters and recent-first offset pagination (`page`, `page_size`).
+The catalog is isolated under `app/modules/collection` with SQLAlchemy models, Pydantic request/response schemas, repository queries, service logic, and routes. Public reads are available at `/api/v1/collections`, `/api/v1/collections/{slug}`, `/api/v1/collections/{slug}/products`, and `/api/v1/products/{id}`. Creating, editing, deleting, and manager listing/detail reads require the current `Admin` role. Product listing is recent-first and paginated (`page`, `page_size`); shop and category are collection metadata used to filter the public collection listing.
 
-Apply the new schema with `alembic upgrade head` after configuring the database. Collection records can point to a parent collection; product records belong to one collection.
+Apply schema changes with `alembic upgrade head` after configuring the database. Collection records can point to a parent collection and include a reel number, shop, category, and up to three image URLs. The migration moves existing product shop/category values to their collection, using the most recently created product where a collection had mixed values. Product records belong to one collection.
 
