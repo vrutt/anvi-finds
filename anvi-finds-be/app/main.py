@@ -4,6 +4,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi import Depends
+from app.security.docs_auth import authenticate_docs
 
 from app.config.database import create_database_engine, create_session_factory
 from app.config.logging import close_logging, configure_logging
@@ -98,9 +100,9 @@ app.include_router(
 
 
 @app.get("/docs", include_in_schema=False)
-async def documentation():
-    """Serve Swagger documentation."""
-
+async def documentation(
+    username: str = Depends(authenticate_docs),
+):
     return get_swagger_ui_html(
         openapi_url="/openapi.json",
         title="Authentication API documentation",

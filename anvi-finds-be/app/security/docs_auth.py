@@ -1,7 +1,7 @@
 
 import secrets
 
-from fastapi import HTTPException, status
+from fastapi import HTTPException, status, Depends
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 
 from app.config.settings import settings
