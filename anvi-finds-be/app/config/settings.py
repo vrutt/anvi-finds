@@ -32,6 +32,9 @@ class Settings(BaseSettings):
     # Enable secure cookies for HTTPS deployments.
     COOKIE_SECURE: bool
 
+    SWAGGER_USERNAME: str
+    SWAGGER_PASSWORD: str
+
     @field_validator("CORS_ALLOWED_ORIGINS")
     @classmethod
     def validate_origins(cls, value: str) -> str:
