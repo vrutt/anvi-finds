@@ -38,7 +38,7 @@ pytest==9.2.0
 pytest-asyncio==1.4.1
 python-dotenv==1.2.2
 ruff==0.17.3
-SQLAlchemy==2.1.6
+SQLAlchemy[asyncio]==2.1.6
 slowapi==0.1.9
 starlette==1.10.0
 typing-inspection==0.4.4
